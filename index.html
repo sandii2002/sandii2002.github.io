@@ -2,6 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<!-- Security: only this page's own script may run; nothing loads from other sites -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-ROHrO5hvNWL0ET0A6MKqznKYkkMlw0hY9B0GvHVvwG0=' 'sha256-FKB2+Qjvci6fkhPVNbo2Y0JrZ5nM4Zl7U87dATHs+2o='; style-src 'unsafe-inline'; img-src 'self' data: blob:; font-src data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; manifest-src 'none'; worker-src 'none'">
+<meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>GP2 Virtual Labs</title>
 <style>
@@ -117,7 +120,7 @@ input[type=checkbox]{accent-color:var(--ink);width:17px;height:17px}
 .cover-name{display:block;font-size:15px;color:var(--ink-2);font-weight:600}
 .cover-name input{display:block;width:100%;border:0;border-bottom:2px solid var(--ink);border-radius:0;background:transparent;font-size:34px;font-weight:750;letter-spacing:-.01em;padding:4px 0 6px;margin-top:2px;min-height:auto;box-shadow:none}
 .cover-name input:focus{box-shadow:none;background:linear-gradient(transparent 55%,var(--hl-soft) 55%)}
-.cover-fields{display:grid;grid-template-columns:1fr 1fr 110px;gap:14px;margin:18px 0 16px}
+.cover-fields{display:grid;grid-template-columns:1fr 110px;gap:14px;margin:18px 0 16px}
 @media (max-width:560px){.cover-fields{grid-template-columns:1fr 1fr}}
 .cover-foot{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 .cover-foot p{margin:0;font-size:14px;color:var(--ink-2);flex:1;min-width:220px}
@@ -319,8 +322,8 @@ const CONFIG = {
   appName: 'GP2 Virtual Labs',
   coordinator: 'Lab Coordinator, Sandi',
   coordinatorName: 'Sandi',
-  // Hash of the instructor-key passphrase (see app.js: Instructor key page). Passphrase: gp2-labkey
-  keyHash: '8c06d12d'
+  // Instructor-key data is encrypted (AES-256-GCM, key from PBKDF2-SHA256 of the passphrase)
+  keyVault: { iter: 600000, salt: 'NJzJfkZ0IVz1gzoqZwCJDA==', iv: 'TY0egKGRc6QpcE+m', ct: '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' }
 };
 
 /* ---------------- small utilities ---------------- */
@@ -770,10 +773,6 @@ registerLab({
   params(r) {
     return { wimV: Math.round(55 + 30 * r()), jacobMm: +(3 + 2 * r()).toFixed(1), vdgV: Math.round(150 + 110 * r()) };
   },
-  key(P) {
-    return [['Tapes pulled side-by-side', 'both NEGATIVE'], ['Stacked tapes', 'top tape POSITIVE, bottom tape NEGATIVE'], ['Electrophorus disk, no finger touch', 'neutral'], ['Electrophorus disk, touched with finger', 'POSITIVE'], ['Van de Graaff dome', 'POSITIVE'],
-    ['Wimshurst max voltage', P.wimV + ' kV → max spark ≈ ' + (P.wimV / 33).toFixed(1) + ' cm'], ['Jacob’s ladder base gap', P.jacobMm + ' mm → ≈ ' + (P.jacobMm / 10 * 33).toFixed(0) + ' kV'], ['Van de Graaff max voltage', P.vdgV + ' kV → max spark ≈ ' + (P.vdgV / 33).toFixed(1) + ' cm']];
-  },
   build(ctx) {
     const P = ctx.P, S = ctx.state.sim;
     S.tapes = S.tapes || null; S.disk = S.disk || { rubbed: false, on: false, touched: false, q: 0 };
@@ -1035,7 +1034,6 @@ registerLab({
   <div class="eq">PE = qV &nbsp;&nbsp;&nbsp; V = kq/r (point charge)</div>
   <p>Think of voltage like height on a topographic map. Lines of equal voltage are <b>equipotential lines</b>. Where they are close together the potential is “steep” and the electric field is strong. The electric field points “downhill” (from high to low voltage), perpendicular to the equipotentials, and can be measured in V/m.</p>`,
   params(r) { return { top: +(9.55 + 0.35 * r()).toFixed(2), bot: +(0.12 + 0.3 * r()).toFixed(2) }; },
-  key(P) { return [['Effective voltage at the + electrode (worn paper)', P.top + ' V'], ['Effective voltage at the grounded electrode', P.bot + ' V'], ['Electrode spacing: Sheet 1 (two dots)', '14 cm'], ['Sheet 2 (parallel plates)', '12 cm'], ['Sheet 3 (dot inside ring)', 'ring radius 8 cm'], ['Typical E between electrodes', '≈ 70–85 V/m (≈ 0.7–0.8 V/cm)']]; },
   build(ctx) {
     const P = ctx.P, S = ctx.state.sim;
     const W = 900, H = 600, pxcm = 30, NX = 120, NY = 80; // paper 30 cm × 20 cm, 0.25 cm cells
@@ -1152,11 +1150,6 @@ registerLab({
   <p>The energy stored in a charged capacitor is</p><div class="eq">U = ½ C V²</div>
   <p>When a charged capacitor is connected to a light bulb, the stored energy flows out through the bulb. A brighter glow means energy is delivered faster (more power); a longer glow means more total energy.</p>`,
   params(r) { return { Vs: +(3.92 + 0.16 * r()).toFixed(2), Rb: +(7 + 2 * r()).toFixed(2), C: 1.0 }; },
-  key(P) {
-    const U0 = 0.5 * P.C * P.Vs ** 2;
-    return [['Supply voltage', P.Vs + ' V'], ['Capacitors', '1.0 F each'], ['U₀ (single)', U0.toFixed(2) + ' J'], ['B parallel together', `V each = ${P.Vs} V, U = 2U₀ = ${(2 * U0).toFixed(2)} J`], ['C parallel separate', `V each = ${(P.Vs / 2).toFixed(2)} V, U = U₀/2 = ${(U0 / 2).toFixed(2)} J (half lost in wires/spark)`],
-    ['D series separate', `V each = ${P.Vs} V, total ${(2 * P.Vs).toFixed(2)} V, U = 2U₀ = ${(2 * U0).toFixed(2)} J`], ['E series together', `V each = ${(P.Vs / 2).toFixed(2)} V, total ${P.Vs} V, U = U₀/2 = ${(U0 / 2).toFixed(2)} J`], ['Bulb resistance (hidden)', P.Rb + ' Ω']];
-  },
   build(ctx) {
     const P = ctx.P, S = ctx.state.sim, C = P.C;
     S.runs = S.runs || {};
@@ -1310,11 +1303,6 @@ registerLab({
   params(r) {
     const pool = shuffle(r, [33, 47, 68, 100, 150, 220]); const nom = pool.slice(0, 3);
     return { Vs: +(5.95 + 0.12 * r()).toFixed(3), nom, act: nom.map(R => +(R * (1 + 0.045 * (2 * r() - 1))).toFixed(2)), lampHot: +(28 + 6 * r()).toFixed(1) };
-  },
-  key(P) {
-    const [a, b, c] = P.act, Rs = a + b + c, Rp = 1 / (1 / a + 1 / b + 1 / c);
-    return [['Supply (actual)', P.Vs + ' V'], ['Nominal R1, R2, R3', P.nom.join(', ') + ' Ω (bands: ' + P.nom.map(R => bandsFor(R).map((d, i) => i < 2 ? BAND_NAMES[d] : BAND_NAMES[d]).join('-') + '-gold').join('; ') + ')'], ['Actual R1, R2, R3', P.act.join(', ') + ' Ω'],
-    ['Series: Req, I', `${Rs.toFixed(1)} Ω, ${(P.Vs / Rs).toFixed(4)} A`], ['Series V1, V2, V3', P.act.map(R => (P.Vs * R / Rs).toFixed(2) + ' V').join(', ')], ['Parallel: Req, Itotal', `${Rp.toFixed(2)} Ω, ${(P.Vs / Rp).toFixed(3)} A`], ['Parallel I1, I2, I3', P.act.map(R => (P.Vs / R).toFixed(4) + ' A').join(', ')], ['Lamp hot resistance', P.lampHot + ' Ω (cold ≈ ' + (P.lampHot / 9).toFixed(1) + ' Ω)']];
   },
   build(ctx) {
     const P = ctx.P;
@@ -1472,7 +1460,6 @@ registerLab({
   <div class="eq">B<sub>coil</sub> ∝ N I &nbsp;&nbsp;&nbsp; tan θ = B<sub>coil</sub> / B<sub>Earth</sub> &nbsp;&nbsp;&nbsp; so tan θ ∝ N I / B<sub>Earth</sub></div>
   <p>For your coil, approximately <span class="eq">B = μ₀ N I / D</span> with μ₀ = 1.26 × 10⁻⁶ T·m/A, giving <span class="eq">tan θ = (μ₀ N / (D B<sub>Earth</sub>)) I</span></p>`,
   params(r) { return { BE: +(1.95e-5 + 0.4e-5 * r()).toExponential(3), k: +(0.93 + 0.06 * r()).toFixed(3), zero: +((r() - .5) * 1.5).toFixed(2) }; },
-  key(P) { const s8 = 1.26e-6 * 8 * P.k / (0.2 * P.BE); return [['Earth’s horizontal field (hidden)', (+P.BE).toExponential(2) + ' T'], ['Coil non-uniformity factor', P.k + ' (Eqn. 4 is approximate)'], ['Expected slope of tan θ vs N (I = 1 A)', (s8 / 8).toFixed(3) + ' per turn'], ['Expected slope of tan θ vs I (N = 8)', s8.toFixed(3) + ' per A'], ['B_Earth a student will compute from that slope (using Eqn. 5)', (1.26e-6 * 8 / (0.2 * s8)).toExponential(2) + ' T'], ['Compass zero offset', P.zero + '°']]; },
   build(ctx) {
     const P = ctx.P, BE = +P.BE, D = 0.20, mu = 1.26e-6;
     let N = 8, Iset = 0, dir = 1, sw = false, needle = 0, jitter = 0;
@@ -1542,7 +1529,6 @@ registerLab({
   <p><b>Lenz’s Law:</b> the induced current makes a field that <i>opposes the change</i> in flux (that is the minus sign).</p>
   <p><b>Transformer equation:</b> both coils share the same changing flux, so <span class="eq">ℰ<sub>S</sub> / ℰ<sub>P</sub> = N<sub>S</sub> / N<sub>P</sub></span></p>`,
   params(r) { return { core: +(0.86 + 0.08 * r()).toFixed(3), air: +(0.025 + 0.035 * r()).toFixed(3), Vp: +(2.97 + 0.06 * r()).toFixed(3) }; },
-  key(P) { return [['Actual primary voltage', P.Vp + ' V'], ['Iron core: fraction of ideal reached', (P.core * 100).toFixed(1) + '% (≈ ' + ((1 - P.core) * 100).toFixed(0) + '% error)'], ['No core: fraction of ideal reached', (P.air * 100).toFixed(1) + '% (≈ ' + ((1 - P.air) * 100).toFixed(0) + '% error)'], ['Example: 400→800 with core', (P.Vp * 2 * P.core).toFixed(2) + ' V (ideal 6.0 V)']]; },
   build(ctx) {
     const P = ctx.P;
     /* ---- Part A ---- */
@@ -1644,7 +1630,6 @@ registerLab({
   <p>Optometrists use <b>lens power</b> in diopters: <span class="eq">P = 1/f (f in meters)</span> so +5.00 D means f = +0.20 m.</p>
   <p>The eye’s image distance (lens to retina) is fixed. If the eye is too long or too short, the image lands in front of or behind the retina — nearsightedness or farsightedness — and a corrective lens is needed.</p>`,
   params(r) { return { f1: +(9.75 + 0.55 * r()).toFixed(2), f2: +(19.4 + 1.2 * r()).toFixed(2) }; },
-  key(P) { return [['Actual f of “+100 mm” lens', (P.f1 * 10).toFixed(1) + ' mm'], ['Actual f of “+200 mm” lens', (P.f2 * 10).toFixed(1) + ' mm'], ['Farsighted (F) correction', '+2.0 D (best), +1.75 D close'], ['Nearsighted (B) correction', '−1.75 D'], ['Image on retina', 'real, inverted'], ['Without water', 'cannot focus at any lamp distance']]; },
   build(ctx) {
     const P = ctx.P, F = letterF(160);
     /* ---------- Part A: optical bench ---------- */
@@ -1766,7 +1751,6 @@ registerLab({
   <p><b>Small angles:</b> sin θ ≈ tan θ = y/L, so &nbsp;<span class="eq">d y / L = mλ</span>&nbsp; and &nbsp;<span class="eq">a y / L = Mλ</span>, where y is the distance on the screen from the center of the pattern and L is the slit-to-screen distance.</p>
   <p class="note warn"><b>Laser safety:</b> in the real lab, never look into the beam or its reflections.</p>`,
   params(r) { return { hair: +(0.062 + 0.04 * r()).toFixed(4) }; },
-  key(P) { const yl = a => (532e-6 * 1000 / a).toFixed(2); return [['Hair diameter (hidden)', (P.hair * 1000).toFixed(0) + ' µm'], ['Single slit M=1 y at L = 100 cm', 'a=0.02: ' + yl(0.02) + ' mm; 0.04: ' + yl(0.04) + ' mm; 0.08: ' + yl(0.08) + ' mm; 0.16: ' + yl(0.16) + ' mm (scales with L)'], ['Double slit fringe spacing at L = 100 cm', 'd=0.25 mm: 2.13 mm; d=0.50 mm: 1.06 mm'], ['Hair: central max half-width at L=100 cm', yl(P.hair) + ' mm']]; },
   build(ctx) {
     const P = ctx.P, lam = 532e-6; // mm
     const AP = {
@@ -1883,7 +1867,6 @@ registerLab({
   <p>So a graph of V₀ vs. f is a straight line with slope h/e and intercept −W/e. Brighter light makes more photons (more current) but does not change the energy of each photon.</p>
   <p class="eq">%-error = |accepted − experimental| / accepted × 100%</p>`,
   params(r) { return { W: +(1.40 + 0.2 * r()).toFixed(3), d: [0, 1, 2, 3].map(() => +((r() - .5) * 0.06).toFixed(3)) }; },
-  key(P) { const L = [470, 525, 589, 624]; return [['Work function W (hidden)', P.W + ' eV'], ...L.map((l, i) => [`True V₀ for ${l} nm`, (1239.84 / l - P.W + P.d[i]).toFixed(3) + ' V']), ['Expected h from a good fit', '≈ 6.3–6.9 × 10⁻³⁴ J·s']]; },
   build(ctx) {
     const P = ctx.P, S = ctx.state.sim;
     const LED = [{ n: 'Blue', l: 470, c: '#2f6bff', I0: 8 }, { n: 'Green', l: 525, c: '#22c55e', I0: 5 }, { n: 'Yellow', l: 589, c: '#facc15', I0: 4 }, { n: 'Red', l: 624, c: '#ef4444', I0: 6 }];
@@ -1975,7 +1958,6 @@ registerLab({
   <p>Example: n = 2 → n = 1 in hydrogen: ΔE = −13.6 eV (1/1² − 1/2²) = −10.2 eV, so λ = 1241/10.2 = 121.6 nm (ultraviolet). The visible hydrogen lines are transitions that end on n = 2.</p>
   <p class="note warn">Real lab: the tubes use dangerously high voltage — turn the power off before changing tubes and never touch the tubes with bare hands.</p>`,
   params(r) { const u = shuffle(r, ['He', 'Ne', 'Ar', 'Kr', 'Hg', 'H']).slice(0, 3); if (!u.includes('Kr') && r() < 0.6) u[2] = 'Kr'; return { unk: u, off: +((r() - .5) * 3).toFixed(1) }; },
-  key(P) { return [['Unknown — red tape', GAS_LINES[P.unk[0]].n], ['Unknown — blue tape', GAS_LINES[P.unk[1]].n], ['Unknown — green tape', GAS_LINES[P.unk[2]].n], ['Spectroscope scale offset', P.off + ' nm (hand spectroscope reads this much off)'], ['H largest visible ΔE', 'violet 410 nm, n=6→2: 3.02 eV'], ['H smallest visible ΔE', 'red 656 nm, n=3→2: 1.89 eV']]; },
   build(ctx) {
     const P = ctx.P;
     const TUBES = [{ id: 'H', label: 'Hydrogen (labeled)' }, { id: 'He', label: 'Helium (labeled)' }, { id: 'Ne', label: 'Neon (labeled)' }, { id: 'Ar', label: 'Argon (labeled)' }, { id: 'Hg', label: 'Mercury (labeled)' },
@@ -2055,7 +2037,6 @@ registerLab({
   <p><b>Radioactive decay law:</b> <span class="eq">N = N₀ e<sup>−λt</sup></span> &nbsp;&nbsp; <b>Half-life:</b> <span class="eq">T<sub>½</sub> = ln 2 / λ ≈ 0.693 / λ</span></p>
   <p>Carbon-14 (T<sub>½</sub> = 5730 years) is used this way to date once-living material.</p>`,
   params() { return {}; },
-  key() { return [['Theoretical fraction decaying per throw', '1/6 = 0.1667'], ['Exact discrete decay constant', '−ln(5/6) = 0.1823 per throw'], ['Theoretical half-life', 'ln2/0.1823 = 3.80 throws (ln2/(1/6) = 4.16 throws)'], ['Data', 'Random — each student’s data differ']]; },
   build(ctx) {
     const S = ctx.state.sim, ND = 100, MAXT = 50;
     S.trials = S.trials || [[], [], [], [], [], []]; // remaining after each throw (index 0 = start)
@@ -2128,7 +2109,6 @@ registerLab({
   <li><b>Gamma (γ):</b> a high-energy photon emitted as the nucleus settles into a lower energy state. Very penetrating; reduced by dense metals like lead or tin.</li></ul>
   <p>The detected <b>intensity</b> (count rate) depends on how much radioactive material there is, its decay rate, the distance to the detector, and what is in between.</p>`,
   params(r) { return { cs: Math.round(1450 + 300 * r()), am: Math.round(210 + 80 * r()), bg: +(2.5 + 2 * r()).toFixed(1) }; },
-  key(P) { const cs = d => (P.cs / (d + 0.3) ** 2).toFixed(0); return [['Background', P.bg + ' counts / 10 s'], ['Cs-137 expected at 0.5 / 1.0 / 2.0 / 4.0 cm', [0.5, 1, 2, 4].map(cs).join(' / ') + ' counts / 10 s (≈ inverse square with an offset)'], ['Am-241', 'alpha part dies off within ~3 cm of air; mostly stopped by paper'], ['Effective shields', 'Cs: brass/tin stop most β; Am: paper stops α, metals reduce γ']]; },
   build(ctx) {
     const P = ctx.P;
     let src = 'cs', gap = 0, shield = 'air', running = false, tInt = 0, counts = [], curCount = 0, audio = false, clicks = 0, actx = null;
@@ -2205,7 +2185,6 @@ registerLab({
   <p><b>Total internal reflection:</b> going from high n to low n, the refracted angle reaches 90° at the <b>critical angle</b>: <span class="eq">n₁ sin θ<sub>c</sub> = n₂ sin 90°</span> Beyond it, all the light reflects.</p>
   <p><b>Dispersion:</b> n depends slightly on wavelength, so different colors bend by different amounts — that is how a prism makes a rainbow.</p>`,
   params(r) { return { A: +(1.475 + 0.025 * r()).toFixed(4), B: 0.0075 }; },
-  key(P) { const n = l => P.A + P.B / (l * l); return [['Acrylic index (589 nm)', n(0.589).toFixed(3)], ['Index for violet 410 nm / red 680 nm', n(0.41).toFixed(3) + ' / ' + n(0.68).toFixed(3)], ['Critical angle (589 nm)', (Math.asin(1 / n(0.589)) / DEG).toFixed(1) + '°'], ['Concave mirror', 'R = 12 cm, f = 6.0 cm'], ['Converging lens', 'f ≈ 6 cm (thick lens)'], ['Diverging lens', 'f ≈ −6 cm (virtual)']]; },
   build(ctx) {
     const P = ctx.P, PX = 20, W = 860, H = 520, nOf = lnm => P.A + P.B / ((lnm / 1000) ** 2);
     const OBJ = {
@@ -2345,7 +2324,6 @@ registerLab({
   <div class="eq">I = I₀ cos² θ</div>
   <p>Crossed filters (θ = 90°) block the light. Reflection from surfaces and scattering in the atmosphere also polarize light — that is why polarized sunglasses cut glare.</p>`,
   params(r) { return { I0: Math.round(380 + 90 * r()), off: +((r() - .5) * 8).toFixed(1), amb: +(4 + 8 * r()).toFixed(1), lcd: pick(r, [45, 90, 0]), glassA: r() < .5 }; },
-  key(P) { return [['I₀ (max through both)', P.I0 + ' lux'], ['Analyzer zero misalignment', P.off + '° (shifts the cos² curve)'], ['Ambient light (offset)', P.amb + ' lux'], ['LCD screen polarization axis', P.lcd + '°'], ['Polarized sunglasses', P.glassA ? 'Pair A' : 'Pair B'], ['Sky overhead', 'partially polarized']]; },
   build(ctx) {
     const P = ctx.P;
     let ang = 0;
@@ -2427,7 +2405,6 @@ registerLab({
   <p><b>Resonance</b> (maximum current) happens when X<sub>L</sub> = X<sub>C</sub>: <span class="eq">ω = 1/√(LC) = 2πf</span></p>
   <p>The voltage across R1 is proportional to the current (V = IR), so Channel B shows you the current.</p>`,
   params(r) { return { L: +(0.0097 + 0.0006 * r()).toFixed(5), C: +(2.26e-6 + 0.16e-6 * r()).toExponential(3), RL: +(2.2 + 1.8 * r()).toFixed(2), V0: 2.0 }; },
-  key(P) { const C = +P.C, f0 = 1 / (2 * Math.PI * Math.sqrt(P.L * C)); return [['Actual L', (P.L * 1000).toFixed(2) + ' mH'], ['Actual C', (C * 1e6).toFixed(3) + ' µF'], ['Inductor’s own resistance', P.RL + ' Ω (why the RL phase is less than 90°)'], ['Theoretical f₀ from nominal 10 mH, 2.3 µF', '1049 Hz'], ['Actual resonance in the sim', f0.toFixed(0) + ' Hz'], ['App 1 answer', 'C = 1/((2π·96.3 MHz)²·3.4 mH) ≈ 8.0 × 10⁻¹⁶ F']]; },
   build(ctx) {
     const P = ctx.P, C = +P.C, R1 = 10, R2 = 10;
     let circ = 'R', f = 500, cur = [null, null], hover = null;
@@ -2495,7 +2472,6 @@ registerLab({
   <ul><li>Square both sides: <b>Z² = 2Dt</b> — a graph of distance² vs. time is a straight line with slope 2D.</li><li>Solve for time: <b>t = Z² ÷ (2D)</b> — twice as far takes four times as long.</li></ul>
   <p>Diffusion is fast over tiny distances and very slow over long ones. That is why cells are small and why your body needs blood flow.</p>`,
   params(r) { return { Tc: +(6 + 4 * r()).toFixed(1), Tr: +(20.5 + 2.5 * r()).toFixed(1), Th: +(52 + 12 * r()).toFixed(1), k: +(0.85 + 0.3 * r()).toFixed(3), seed: Math.floor(r() * 1e9) }; },
-  key(P) { const D = T => P.k * 0.042 * ((T + 273.15) / 295) * (0.955 / visc(T)); return [['Water temperatures (cold / room / hot)', `${P.Tc} / ${P.Tr} / ${P.Th} °C`], ['Effective D (cold / room / hot)', [P.Tc, P.Tr, P.Th].map(T => D(T).toFixed(4)).join(' / ') + ' cm²/s'], ['d² vs t slope = 8D', [P.Tc, P.Tr, P.Th].map(T => (8 * D(T)).toFixed(3)).join(' / ') + ' cm²/s'], ['D vs T shape', 'super-linear (bends up)'], ['Random walk expected slope 2D', '2 × 91/6 = 30.3 squares² per step'], ['Part 3', 'Q1: 5 s; Q2: 0.05 s; Q3: 10 × 0.05 = 0.5 s']]; },
   build(ctx) {
     const P = ctx.P, S = ctx.state.sim;
     /* ---------- Part 1: random walk ---------- */
@@ -2597,7 +2573,8 @@ function visc(T) { return 2.414e-2 * Math.pow(10, 247.8 / (T + 273.15 - 140)); }
    App shell: home page, lab pages, sending, instructor key
    ===================================================================== */
 const App = {
-  student: Store.get('vl:student', { name: '', eid: '', section: '', group: '' }),
+  // Only name, section and group are kept. Any eID saved by an older version is erased on load.
+  student: (() => { const s = Store.get('vl:student', { name: '', section: '', group: '' }); if (s && 'eid' in s) { delete s.eid; Store.set('vl:student', s); } return s; })(),
   ctx: null, introDone: false
 };
 const root = () => $('#app');
@@ -2629,23 +2606,22 @@ function renderHome() {
   const s = App.student, app = root(); app.innerHTML = ''; app.appendChild(topbar());
   const w = el('main', { class: 'home' + (App.introDone ? '' : ' intro') }); App.introDone = true; app.appendChild(w);
   const f = {
-    name: el('input', { type: 'text', value: s.name, placeholder: 'Your full name', autocomplete: 'name', id: 'stuName' }),
-    eid: el('input', { type: 'text', value: s.eid, placeholder: 'jdoe' }),
+    name: el('input', { type: 'text', value: s.name, placeholder: 'First and last name', autocomplete: 'name', id: 'stuName' }),
     section: el('input', { type: 'text', value: s.section, placeholder: 'Tue 2:30' }),
     group: el('input', { type: 'text', value: s.group, placeholder: '1–10' })
   };
   const saveInfo = e => {
     e && e.preventDefault();
-    if (!f.name.value.trim()) { toast('Type your full name first.'); f.name.focus(); return; }
+    if (f.name.value.trim().split(/\s+/).length < 2) { toast('Type your first and last name.'); f.name.focus(); return; }
     const old = normName(App.student.name);
-    App.student = { name: f.name.value.trim(), eid: f.eid.value.trim(), section: f.section.value.trim(), group: f.group.value.trim() };
+    App.student = { name: f.name.value.trim().replace(/\s+/g, ' '), section: f.section.value.trim(), group: f.group.value.trim() };
     Store.set('vl:student', App.student);
     toast(old && old !== normName(App.student.name) ? 'Name changed. Your virtual equipment values change with it.' : 'Details saved', 3600);
     renderHome();
   };
   const cover = el('form', { class: 'sheet cover', onsubmit: saveInfo },
     el('label', { class: 'cover-name', for: 'stuName' }, 'Lab notebook of', f.name),
-    el('div', { class: 'cover-fields' }, el('label', { class: 'f' }, 'K-State eID', f.eid), el('label', { class: 'f' }, 'Lab section', f.section), el('label', { class: 'f' }, 'Group', f.group)),
+    el('div', { class: 'cover-fields' }, el('label', { class: 'f' }, 'Lab section', f.section), el('label', { class: 'f' }, 'Group', f.group)),
     el('div', { class: 'cover-foot' }, el('p', null, 'Type your name the same way every time — your virtual equipment (resistor values, unknown gases…) is generated from it.'), el('button', { class: 'btn', type: 'submit' }, s.name ? 'Save changes' : 'Save my details')));
   // most recent unfinished lab
   let recent = null; LABS.forEach(l => { const st = labState(l.id); if (st && st.meta && st.meta.updated && !st.meta.submittedAt && hasWork(st) && (!recent || st.meta.updated > recent.t)) recent = { lab: l, t: st.meta.updated }; });
@@ -2800,15 +2776,15 @@ function buildReport(ctx) {
   const filename = `${(s.name || 'student').replace(/[^A-Za-z0-9]+/g, '_')}_${lab.num ? 'Lab' + lab.num + '_' : ''}${lab.title.replace(/[^A-Za-z0-9]+/g, '_')}.html`.replace(/_+/g, '_');
   let h = `<div style="font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#111;max-width:860px">`;
   h += `<h2 style="margin:0 0 4px;color:#1B2838">${esc(title)}</h2><div style="color:#555;margin-bottom:10px">${esc(CONFIG.course)} — Virtual Lab Report</div>`;
-  h += `<table style="border-collapse:collapse;font-size:13px;margin-bottom:10px">` + [['Student', s.name], ['K-State eID', s.eid], ['Section', s.section], ['Group', s.group], ['Submitted', when.toLocaleString()]].map(r => `<tr><td style="padding:2px 10px 2px 0;color:#555">${r[0]}</td><td style="padding:2px 0"><b>${esc(r[1] || '—')}</b></td></tr>`).join('') + `</table>`;
-  let t = `${title}\n${CONFIG.course} — Virtual Lab Report\nStudent: ${s.name} | eID: ${s.eid || '—'} | Section: ${s.section || '—'} | Group: ${s.group || '—'}\nSubmitted: ${when.toLocaleString()}\n`;
+  h += `<table style="border-collapse:collapse;font-size:13px;margin-bottom:10px">` + [['Student', s.name], ['Section', s.section], ['Group', s.group], ['Submitted', when.toLocaleString()]].map(r => `<tr><td style="padding:2px 10px 2px 0;color:#555">${r[0]}</td><td style="padding:2px 0"><b>${esc(r[1] || '—')}</b></td></tr>`).join('') + `</table>`;
+  let t = `${title}\n${CONFIG.course} — Virtual Lab Report\nStudent: ${s.name} | Section: ${s.section || '—'} | Group: ${s.group || '—'}\nSubmitted: ${when.toLocaleString()}\n`;
   let ph = '', pt = ''; // pending section heading (only written if the section has content)
   ctx.items.forEach(it => {
     if (it.heading) { ph = `<h3 style="margin:18px 0 6px;border-bottom:2px solid #1B2838;padding-bottom:2px">${esc(it.heading)}</h3>`; pt = `\n==== ${it.heading.toUpperCase()} ====\n`; return; }
     try { const hh = it.reportHTML(), tt = it.reportText(); if (hh || tt) { h += ph; t += pt; ph = pt = ''; } if (hh) h += hh; if (tt) t += tt + '\n\n'; } catch (e) { console.error(e); }
   });
   h += `</div>`;
-  const doc = `<!doctype html><html><head><meta charset="utf-8"><title>${esc(subject)}</title></head><body style="margin:24px">${h}</body></html>`;
+  const doc = `<!doctype html><html><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; img-src data:"><title>${esc(subject)}</title></head><body style="margin:24px">${h}</body></html>`;
   return { html: h, doc, text: t.replace(/\n{3,}/g, '\n\n'), subject, filename, title };
 }
 
@@ -2912,19 +2888,30 @@ function openSubmit(ctx) {
 }
 
 /* ---------------- Instructor key ---------------- */
+// Decrypts the instructor-key functions. A wrong passphrase fails AES-GCM authentication.
+async function openVault(pw) {
+  const V = CONFIG.keyVault, b = s => Uint8Array.from(atob(s), ch => ch.charCodeAt(0));
+  const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(pw), 'PBKDF2', false, ['deriveKey']);
+  const k = await crypto.subtle.deriveKey({ name: 'PBKDF2', salt: b(V.salt), iterations: V.iter, hash: 'SHA-256' }, base, { name: 'AES-GCM', length: 256 }, false, ['decrypt']);
+  const code = new TextDecoder().decode(await crypto.subtle.decrypt({ name: 'AES-GCM', iv: b(V.iv) }, k, b(V.ct)));
+  if (!window.__GP2KEYS) { const s = document.createElement('script'); s.textContent = code; document.head.appendChild(s); }
+  if (!window.__GP2KEYS) throw new Error('vault script did not run');
+  return window.__GP2KEYS;
+}
 function renderKey() {
   closeLab(); const app = root(); app.innerHTML = ''; app.appendChild(topbar());
   const w = el('main', { class: 'wrap' }); app.appendChild(w);
   const pass = el('input', { type: 'password', placeholder: 'Passphrase', 'aria-label': 'Passphrase' });
   const out = el('div');
-  const unlock = () => {
-    if (hashStr(pass.value.trim()).toString(16) !== CONFIG.keyHash) { toast('That passphrase doesn’t match.'); return; }
+  const unlock = async () => {
+    if (!(window.isSecureContext && window.crypto && crypto.subtle)) { toast('Open the site at https:// to use the instructor key.'); return; }
+    let KEYS; try { KEYS = await openVault(pass.value.trim()); } catch (e) { toast('That passphrase doesn’t match.'); return; }
     const name = el('input', { type: 'text', placeholder: 'Name exactly as on their report' });
     const labSel = selectBox(LABS.map(l => ({ v: l.id, label: labName(l) })), LABS[0].id);
     const res = el('div');
     const show = () => {
       const lab = LABS.find(l => l.id === labSel.value); const P = labParams(lab, name.value);
-      const rows = lab.key ? lab.key(P) : [['(no hidden values)', '']];
+      const rows = KEYS[lab.id] ? KEYS[lab.id](P) : [['(no hidden values)', '']];
       res.innerHTML = `<table class="data" style="max-width:760px">${rows.map(r => `<tr><td class="rl">${esc(r[0])}</td><td style="text-align:left">${esc(r[1])}</td></tr>`).join('')}</table>`;
     };
     name.addEventListener('input', show); labSel.addEventListener('change', show);
